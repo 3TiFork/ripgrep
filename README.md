@@ -283,7 +283,7 @@ If you're a **Guix** user, you can install ripgrep from the official
 package collection:
 
 ```
-$ sudo guix install ripgrep
+$ guix install ripgrep
 ```
 
 If you're a **Debian** user (or a user of a Debian derivative like **Ubuntu**),
@@ -356,6 +356,13 @@ same port as Haiku x86_64 using the x86 secondary architecture build:
 
 ```
 $ sudo pkgman install ripgrep_x86
+```
+
+If you're a **Void Linux** user, then you can install ripgrep from the
+[official repository](https://voidlinux.org/packages/?arch=x86_64&q=ripgrep):
+
+```
+$ sudo xbps-install -Syv ripgrep
 ```
 
 If you're a **Rust programmer**, ripgrep can be installed with `cargo`.
