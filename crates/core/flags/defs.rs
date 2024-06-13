@@ -34,6 +34,8 @@ use crate::flags::{
 #[cfg(test)]
 use crate::flags::parse::parse_low_raw;
 
+use super::CompletionType;
+
 /// A list of all flags in ripgrep via implementations of `Flag`.
 ///
 /// The order of these flags matter. It determines the order of the flags in
@@ -1582,6 +1584,9 @@ The encoding detection that ripgrep uses can be reverted to its automatic mode
 via the \flag-negate{encoding} flag.
 "
     }
+    fn completion_type(&self) -> CompletionType {
+        CompletionType::Encoding
+    }
 
     fn update(&self, v: FlagValue, args: &mut LowArgs) -> anyhow::Result<()> {
         let value = match v {
@@ -1976,6 +1981,9 @@ patterns.
 When \flag{file} or \flag{regexp} is used, then ripgrep treats all positional
 arguments as files or directories to search.
 "
+    }
+    fn completion_type(&self) -> CompletionType {
+        CompletionType::Filename
     }
 
     fn update(&self, v: FlagValue, args: &mut LowArgs) -> anyhow::Result<()> {
@@ -2738,7 +2746,7 @@ impl Flag for Hidden {
 Search hidden files and directories. By default, hidden files and directories
 are skipped. Note that if a hidden file or a directory is whitelisted in
 an ignore file, then it will be searched even if this flag isn't provided.
-Similarly if a hidden file or directory is given explicitly as an argumnet to
+Similarly if a hidden file or directory is given explicitly as an argument to
 ripgrep.
 .sp
 A file or directory is considered hidden if its base name starts with a dot
@@ -2807,6 +2815,9 @@ to calling \fBgethostname\fP. On Windows, this corresponds to calling
 .sp
 ripgrep uses your system's hostname for producing hyperlinks.
 "#
+    }
+    fn completion_type(&self) -> CompletionType {
+        CompletionType::Executable
     }
 
     fn update(&self, v: FlagValue, args: &mut LowArgs) -> anyhow::Result<()> {
@@ -3140,6 +3151,9 @@ files have lower precedence than later files.
 If you are looking for a way to include or exclude files and directories
 directly on the command line, then use \flag{glob} instead.
 "
+    }
+    fn completion_type(&self) -> CompletionType {
+        CompletionType::Filename
     }
 
     fn update(&self, v: FlagValue, args: &mut LowArgs) -> anyhow::Result<()> {
@@ -5410,6 +5424,9 @@ format, then \fBpzstd\fP is used to decompress the contents to stdout.
 This overrides the \flag{search-zip} flag.
 "#
     }
+    fn completion_type(&self) -> CompletionType {
+        CompletionType::Executable
+    }
 
     fn update(&self, v: FlagValue, args: &mut LowArgs) -> anyhow::Result<()> {
         let path = match v {
@@ -6781,6 +6798,9 @@ any rules found in ignore files.
 To see the list of available file types, use the \flag{type-list} flag.
 "#
     }
+    fn completion_type(&self) -> CompletionType {
+        CompletionType::Filetype
+    }
 
     fn update(&self, v: FlagValue, args: &mut LowArgs) -> anyhow::Result<()> {
         args.type_changes.push(TypeChange::Select {
@@ -6999,6 +7019,9 @@ will only search files that are unrecognized by its type definitions.
 .sp
 To see the list of available file types, use the \flag{type-list} flag.
 "#
+    }
+    fn completion_type(&self) -> CompletionType {
+        CompletionType::Filetype
     }
 
     fn update(&self, v: FlagValue, args: &mut LowArgs) -> anyhow::Result<()> {
@@ -7238,7 +7261,7 @@ impl Flag for Vimgrep {
         Category::Output
     }
     fn doc_short(&self) -> &'static str {
-        r"Print results im a vim compatible format."
+        r"Print results in a vim compatible format."
     }
     fn doc_long(&self) -> &'static str {
         r"
